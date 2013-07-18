@@ -1,0 +1,31 @@
+int AnalogFdbck = 0; 
+int SetPoint = 2; 
+long StageTime = 10000; 
+long PrevMillis = 0; 
+int SetPointLev = 0; 
+int val = 0;
+
+void setup() 
+{ 
+Serial.begin(9600); 
+}
+
+void loop() 
+{ 
+unsigned long CurrMillis = millis(); 
+if(CurrMillis < 10000) 
+{ 
+digitalWrite(SetPoint,SetPointLev); 
+} 
+else if(CurrMillis - PrevMillis > StageTime) 
+{ 
+val = analogRead(AnalogFdbck); 
+val = val*5; 
+val = val/1023; 
+Serial.println(val); 
+PrevMillis = CurrMillis; 
+SetPointLev = SetPointLev + 50; 
+analogWrite(SetPoint,SetPointLev); 
+} 
+}
+
